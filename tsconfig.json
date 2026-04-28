@@ -25,17 +25,16 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@core/*": ["src/core/*"],
-      "@storage/*": ["src/storage/*"],
-      "@retrieval/*": ["src/retrieval/*"],
-      "@policies/*": ["src/policies/*"],
-      "@extraction/*": ["src/extraction/*"],
-      "@events/*": ["src/events/*"],
-      "@embedding/*": ["src/embedding/*"],
-      "@llm/*": ["src/llm/*"]
+      "@/*": ["./src/*"],
+      "@core/*": ["./src/core/*"],
+      "@storage/*": ["./src/storage/*"],
+      "@retrieval/*": ["./src/retrieval/*"],
+      "@policies/*": ["./src/policies/*"],
+      "@extraction/*": ["./src/extraction/*"],
+      "@events/*": ["./src/events/*"],
+      "@embedding/*": ["./src/embedding/*"],
+      "@llm/*": ["./src/llm/*"]
     }
   },
   "include": ["src/**/*"],
