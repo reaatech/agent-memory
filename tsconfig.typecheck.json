@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@reaatech/agent-memory-core": ["./packages/core/src/index.ts"],
+      "@reaatech/agent-memory-storage": ["./packages/storage/src/index.ts"],
+      "@reaatech/agent-memory-embedding": ["./packages/embedding/src/index.ts"],
+      "@reaatech/agent-memory-llm": ["./packages/llm/src/index.ts"],
+      "@reaatech/agent-memory-retrieval": ["./packages/retrieval/src/index.ts"],
+      "@reaatech/agent-memory-policies": ["./packages/policies/src/index.ts"],
+      "@reaatech/agent-memory-extraction": ["./packages/extraction/src/index.ts"],
+      "@reaatech/agent-memory-events": ["./packages/events/src/index.ts"],
+      "@reaatech/agent-memory": ["./packages/agent-memory/src/index.ts"]
+    }
+  }
+}

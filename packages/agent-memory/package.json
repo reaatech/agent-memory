@@ -1,0 +1,53 @@
+{
+  "name": "@reaatech/agent-memory",
+  "version": "0.1.0",
+  "description": "Long-term memory layer for AI agents — facade package",
+  "license": "MIT",
+  "author": "Rick Somers <rick@reaatech.com> (https://reaatech.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reaatech/agent-memory.git",
+    "directory": "packages/agent-memory"
+  },
+  "homepage": "https://github.com/reaatech/agent-memory/tree/main/packages/agent-memory#readme",
+  "bugs": {
+    "url": "https://github.com/reaatech/agent-memory/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@reaatech/agent-memory-core": "workspace:*",
+    "@reaatech/agent-memory-storage": "workspace:*",
+    "@reaatech/agent-memory-embedding": "workspace:*",
+    "@reaatech/agent-memory-llm": "workspace:*",
+    "@reaatech/agent-memory-retrieval": "workspace:*",
+    "@reaatech/agent-memory-policies": "workspace:*",
+    "@reaatech/agent-memory-extraction": "workspace:*",
+    "@reaatech/agent-memory-events": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1",
+    "@types/node": "^25.6.0"
+  }
+}
