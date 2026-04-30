@@ -5,6 +5,7 @@ node_modules/
 # Build outputs
 dist/
 build/
+.turbo/
 *.tsbuildinfo
 
 # Test coverage
@@ -54,6 +55,12 @@ package-lock.json
 # Tarballs
 *.tgz
 *.tar.gz
+
+# Prevent stray build output in source directories
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.ts.map
 
 # Misc
 .cache/

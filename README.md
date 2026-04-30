@@ -1,302 +1,120 @@
 # agent-memory
 
-Long-term memory layer for AI agents. Sessions give you multi-turn. This gives you multi-session.
-
 [![CI](https://github.com/reaatech/agent-memory/actions/workflows/ci.yml/badge.svg)](https://github.com/reaatech/agent-memory/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![npm](https://img.shields.io/npm/v/@reaatech/agent-memory?color=cb3837&logo=npm)](https://www.npmjs.com/package/@reaatech/agent-memory)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 
-## Why agent-memory?
+> Long-term memory layer for AI agents. Sessions give you multi-turn. This gives you multi-session.
 
-Most agent memory libraries are vector search with no curation — they store everything, forget nothing, and silently contradict themselves. **agent-memory** answers the hard questions:
-
-- **What to remember?** — An LLM-powered extraction engine identifies facts, preferences, decisions, and corrections from conversation, scoring each on importance and confidence.
-- **What to forget?** — A pluggable decay engine and forgetting policy ensure memory stays relevant and bounded. Non-critical memories decay over time; frequently accessed memories are boosted.
-- **How to handle contradictions?** — When a new fact conflicts with stored memory, a resolution engine decides which wins (newest, highest confidence, manual review, or custom rules), producing auditable decisions.
-
-## Project Status
-
-**v0.1.0** — Early release focused on the PostgreSQL + OpenAI stack. Core extraction, storage, retrieval, policies, and events are implemented and tested.
-
-See [CHANGELOG.md](./CHANGELOG.md) for release details and the project roadmap.
-
-## Features
-
-| Module | Capabilities |
-|--------|-------------|
-| **Memory Extraction** | LLM-based extraction of facts, preferences, decisions, corrections, context, and episodic memories with confidence scoring |
-| **Storage Adapters** | In-memory (tests/dev), PostgreSQL + pgvector (production). Qdrant and Pinecone planned |
-| **Embedding Providers** | OpenAI, Cohere, HuggingFace Inference API. LRU caching layer included |
-| **Semantic Retrieval** | Vector search with hybrid metadata filtering, five retrieval strategies (semantic, recency, importance, topic, adaptive) |
-| **Context Injection** | Formats retrieved memories for LLM prompts with token budget management |
-| **Policy Engine** | Pluggable rules for decay, forgetting, and contradiction resolution |
-| **Event System** | Subscribe to memory lifecycle events (extracted, stored, retrieved, forgotten, contradiction resolved) |
-| **Multi-tenancy** | Tenant-isolated memory spaces with per-tenant lifecycle management |
-| **Type Safety** | Strict TypeScript — no `any` types in the public API |
-
-## Prerequisites
-
-- **Node.js** ≥ 20
-- **pnpm** ≥ 8
-- For PostgreSQL adapter: **pgvector** (see [docker-compose.yml](./docker-compose.yml))
+Most agent memory libraries are vector search with no curation — they store everything, forget nothing, and silently contradict themselves. **agent-memory** treats memory as a managed asset with an explicit lifecycle: extraction, decay, forgetting, and contradiction resolution.
 
 ## Installation
 
+Packages are published under the `@reaatech` scope and can be installed individually:
+
 ```bash
+# Main facade — batteries-included entry point
 pnpm add @reaatech/agent-memory
+
+# Individual packages for tree-shaking and direct use
+pnpm add @reaatech/agent-memory-core
+pnpm add @reaatech/agent-memory-storage
+pnpm add @reaatech/agent-memory-embedding
+pnpm add @reaatech/agent-memory-llm
+pnpm add @reaatech/agent-memory-retrieval
+pnpm add @reaatech/agent-memory-policies
+pnpm add @reaatech/agent-memory-extraction
+pnpm add @reaatech/agent-memory-events
 ```
 
 ## Quick Start
 
-### In-memory adapter (for testing and demos)
-
 ```typescript
 import { AgentMemory, OpenAILLMProvider, MemoryType } from '@reaatech/agent-memory';
-
-const openai = new OpenAILLMProvider({
-  apiKey: process.env.OPENAI_API_KEY!,
-  model: 'gpt-4o-mini',
-});
 
 const memory = new AgentMemory({
   storage: { provider: 'memory' },
   embedding: {
     provider: 'openai',
     model: 'text-embedding-3-small',
-    apiKey: process.env.OPENAI_API_KEY!,
+    apiKey: process.env.OPENAI_API_KEY,
   },
   extraction: {
-    llmProvider: openai,
+    llmProvider: new OpenAILLMProvider({
+      apiKey: process.env.OPENAI_API_KEY,
+      model: 'gpt-4o-mini',
+    }),
     enabledTypes: [MemoryType.FACT, MemoryType.PREFERENCE, MemoryType.CORRECTION],
     batchSize: 10,
     confidenceThreshold: 0.7,
   },
 });
 
-// After a conversation turn, extract and store memories
+// Extract and store memories from a conversation
 const stored = await memory.extractAndStore(conversationTurns);
 
-// Before generating a response, retrieve relevant context
+// Retrieve relevant memories for a query
 const relevant = await memory.retrieve('Where does the user live?', { limit: 5 });
-```
 
-### PostgreSQL adapter (for production)
-
-Start pgvector:
-
-```bash
-docker compose up -d
-```
-
-```typescript
-import { AgentMemory, OpenAILLMProvider } from '@reaatech/agent-memory';
-
-const openai = new OpenAILLMProvider({
-  apiKey: process.env.OPENAI_API_KEY!,
-  model: 'gpt-4o-mini',
-});
-
-const memory = new AgentMemory({
-  storage: {
-    provider: 'postgres',
-    connection: {
-      host: 'localhost',
-      database: 'agent_memory',
-      user: 'postgres',
-      password: process.env.DB_PASSWORD!,
-    },
-  },
-  embedding: {
-    provider: 'openai',
-    model: 'text-embedding-3-small',
-    apiKey: process.env.OPENAI_API_KEY!,
-  },
-  extraction: {
-    llmProvider: openai,
-    enabledTypes: ['fact', 'preference', 'correction'],
-    batchSize: 10,
-    confidenceThreshold: 0.7,
-  },
-});
-```
-
-## Configuration
-
-### Storage backends
-
-| Provider | Use case |
-|----------|----------|
-| `memory` | Testing, demos, lightweight deployments (no persistence) |
-| `postgres` | Production (requires pgvector extension) |
-
-```typescript
-// Shorthand
-storage: { provider: 'memory' }
-
-// PostgreSQL with full config
-storage: {
-  provider: 'postgres',
-  connection: {
-    host: 'localhost',
-    port: 5432,
-    database: 'agent_memory',
-    user: 'postgres',
-    password: process.env.DB_PASSWORD!,
-    schema: 'public',
-  },
-}
-
-// Or pass a pre-configured adapter instance
-storage: new PostgresMemoryStorage({ host: 'localhost', database: 'agent_memory', user: 'postgres', password: process.env.DB_PASSWORD! })
-```
-
-### Embedding providers
-
-| Provider | Models |
-|----------|--------|
-| `openai` | `text-embedding-3-small`, `text-embedding-3-large`, `text-embedding-ada-002` |
-| `cohere` | Cohere embed models via API |
-| `huggingface` | HuggingFace Inference API (self-hosted or cloud) |
-
-Embedding results are cached by default using an in-memory LRU cache.
-
-### Policy Engine
-
-```typescript
-const memory = new AgentMemory({
-  // ... storage, embedding, extraction
-  policies: {
-    decay: {
-      halfLifeDays: { critical: 3650, high: 365, medium: 90, low: 30, transient: 7 },
-    },
-    forgetting: {
-      forgetThreshold: 0.1,    // Decay score below which memories are forgotten
-      capacityLimit: 10000,    // Max active memories per tenant
-      archiveBeforeDelete: true,
-    },
-    contradiction: {
-      defaultStrategy: 'highest_confidence',
-      similarityThreshold: 0.8,
-      autoResolve: true,
-    },
-    rules: [
-      // Custom domain-specific policies
-      { id: 'medical-critical', priority: 100, condition: { type: 'tag_matches', pattern: 'medical:*' }, action: { type: 'freeze_decay' } },
-    ],
-  },
-});
-```
-
-### Retention Strategies
-
-```typescript
-const memory = new AgentMemory({
-  // ...
-  retrieval: {
-    defaultLimit: 5,
-    useCrossEncoder: false,     // Cross-encoder re-ranking (planned)
-    diversityFactor: 0.3,       // 0 = no diversity, 1 = max diversity
-    strategies: ['semantic'],   // semantic | recency | importance | topic | adaptive
-  },
-});
-```
-
-### Maintenance
-
-Run periodic maintenance to apply decay and forgetting policies:
-
-```typescript
-// Typically invoked by a cron job or scheduler (e.g., daily)
+// Run maintenance — applies decay and forgetting policies
 await memory.runMaintenance();
 ```
 
-### Events
+See the [`examples/`](./examples/) directory for working samples.
 
-```typescript
-memory.events.on('memory:contradiction:resolved', async (event) => {
-  await auditLog.record({
-    tenantId: event.tenantId,
-    decision: event.payload.decision,
-    reason: event.payload.reason,
-  });
-});
-```
+## Packages
 
-## Architecture
+| Package | Description |
+| ------- | ----------- |
+| [`@reaatech/agent-memory`](./packages/agent-memory) | Main facade wiring all packages together |
+| [`@reaatech/agent-memory-core`](./packages/core) | Core types, enums, and utilities |
+| [`@reaatech/agent-memory-storage`](./packages/storage) | Storage abstraction (In-Memory, PostgreSQL pgvector) |
+| [`@reaatech/agent-memory-embedding`](./packages/embedding) | Embedding providers (OpenAI, Cohere, HuggingFace) |
+| [`@reaatech/agent-memory-llm`](./packages/llm) | LLM provider abstraction |
+| [`@reaatech/agent-memory-retrieval`](./packages/retrieval) | Semantic retrieval with ranking strategies |
+| [`@reaatech/agent-memory-policies`](./packages/policies) | Decay, forgetting, and contradiction resolution |
+| [`@reaatech/agent-memory-extraction`](./packages/extraction) | LLM-based memory extraction from conversations |
+| [`@reaatech/agent-memory-events`](./packages/events) | Event bus for memory lifecycle hooks |
 
-```
- ┌──────────────────────────────────────────────────────┐
- │                 Application / Agent                   │
- └──────────────────────────────────────────────────────┘
-                           │
-                           ▼
- ┌──────────────────────────────────────────────────────┐
- │               AgentMemory (Facade)                     │
- │  ┌────────────┐  ┌────────────┐  ┌────────────────┐  │
- │  │  Extractor │  │  Retriever │  │ Policy Engine  │  │
- │  │ (LLM-based)│  │  (Hybrid)  │  │ (Decay/Forget/  │  │
- │  │            │  │            │  │  Contradict)    │  │
- │  └────────────┘  └────────────┘  └────────────────┘  │
- └──────────────────────────────────────────────────────┘
-                           │
-                           ▼
- ┌──────────────────────────────────────────────────────┐
- │               Storage Abstraction                     │
- │    ┌────────────────────────────────────────────┐     │
- │    │            MemoryStorage Interface           │     │
- │    │    create / read / update / delete / search  │     │
- │    └────────────────────────────────────────────┘     │
- │         │                           │                │
- │         ▼                           ▼                │
- │  ┌──────────────┐          ┌──────────────────┐      │
- │  │  In-Memory   │          │  PostgreSQL       │      │
- │  │  (tests/dev) │          │  + pgvector       │      │
- │  └──────────────┘          └──────────────────┘      │
- └──────────────────────────────────────────────────────┘
-```
+## Features
 
-## Development
+- **LLM-powered extraction** — Identifies facts, preferences, decisions, and corrections from conversations with confidence scoring
+- **Semantic retrieval** — Vector search with hybrid metadata filtering and five retrieval strategies (semantic, recency, importance, topic, adaptive)
+- **Lifecycle management** — Exponential decay with configurable half-lives, automatic forgetting with capacity limits, and four contradiction resolution strategies
+- **Pluggable storage** — In-memory adapter (dev/test) and PostgreSQL pgvector adapter (production)
+- **Multi-provider embedding** — OpenAI, Cohere, and HuggingFace with transparent LRU caching
+- **Event hooks** — Subscribe to memory lifecycle events for audit logging and metrics
+- **Multi-tenancy** — Tenant-isolated memory spaces with per-tenant lifecycle management
+- **Custom policy rules** — Define domain-specific retention rules (e.g., "medical preferences never decay")
+
+## Contributing
 
 ```bash
+# Clone the repository
+git clone https://github.com/reaatech/agent-memory.git
+cd agent-memory
+
 # Install dependencies
 pnpm install
 
-# Copy environment template
-cp .env.example .env
+# Build all packages
+pnpm build
 
-# Build
-pnpm run build
+# Run the test suite
+pnpm test
 
-# Run tests
-pnpm run test
-
-# Run tests with coverage
-pnpm run test:coverage
-
-# Lint and format
-pnpm run lint
-pnpm run format
+# Lint and typecheck
+pnpm lint
+pnpm typecheck
 ```
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed contribution guidelines.
 
 ## Documentation
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — System design, data models, and component interactions
-- [AGENTS.md](./AGENTS.md) — AI agent development guidelines
-- [CONTRIBUTING.md](./CONTRIBUTING.md) — Contribution guidelines
-- [CHANGELOG.md](./CHANGELOG.md) — Release history
-- [SECURITY.md](./SECURITY.md) — Security policy
-
-## Roadmap
-
-- Qdrant and Pinecone storage adapters
-- Cross-encoder re-ranking for retrieval
-- Encryption at rest for sensitive memories
-- Memory consolidation and summarization
-- Metrics and health check endpoints
-- Graph-based memory relationships
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — System design, data models, and component interactions
+- [`AGENTS.md`](./AGENTS.md) — AI agent development guidelines and skills system
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md) — Contribution workflow and release process
+- [`SECURITY.md`](./SECURITY.md) — Security policy
 
 ## License
 
-MIT © [reaatech](https://github.com/reaatech)
+[MIT](LICENSE)
