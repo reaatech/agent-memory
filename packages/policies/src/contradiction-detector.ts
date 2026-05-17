@@ -1,7 +1,5 @@
 import type { Memory } from '@reaatech/agent-memory-core';
-import { MemoryLifecycle } from '@reaatech/agent-memory-core';
-import { cosineSimilarity } from '@reaatech/agent-memory-core';
-import { getLogger } from '@reaatech/agent-memory-core';
+import { cosineSimilarity, getLogger, MemoryLifecycle } from '@reaatech/agent-memory-core';
 
 /**
  * Detects potential contradictions between a new memory and existing memories.

@@ -1,5 +1,5 @@
-import { MemoryLifecycle } from '@reaatech/agent-memory-core';
 import type { Memory } from '@reaatech/agent-memory-core';
+import { MemoryLifecycle } from '@reaatech/agent-memory-core';
 import { describe, expect, it } from 'vitest';
 import { ContradictionDetector } from './contradiction-detector.js';
 

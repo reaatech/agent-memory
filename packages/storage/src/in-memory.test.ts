@@ -1,10 +1,10 @@
+import type { Memory } from '@reaatech/agent-memory-core';
 import {
   MemoryImportance,
   MemoryLifecycle,
   MemorySource,
   MemoryType,
 } from '@reaatech/agent-memory-core';
-import type { Memory } from '@reaatech/agent-memory-core';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { InMemoryMemoryStorage } from './in-memory.js';
 

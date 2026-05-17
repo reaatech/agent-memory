@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { RetrievalStrategy } from './types.js';
 import type { RetrievalConfig, RetrievalOptions } from './types.js';
+import { RetrievalStrategy } from './types.js';
 
 describe('retrieval types', () => {
   it('has correct retrieval strategy values', () => {

@@ -1,5 +1,4 @@
-import { withRetry } from '@reaatech/agent-memory-core';
-import { fetchWithTimeout } from '@reaatech/agent-memory-core';
+import { fetchWithTimeout, withRetry } from '@reaatech/agent-memory-core';
 import type { EmbeddingProvider, ModelInfo } from './types.js';
 
 export interface CohereEmbeddingConfig {

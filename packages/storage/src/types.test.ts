@@ -1,7 +1,7 @@
 import type { Memory } from '@reaatech/agent-memory-core';
 import { describe, expect, it } from 'vitest';
-import { MemoryQuery } from './types.js';
 import type { MemoryStorage, SearchOptions } from './types.js';
+import { MemoryQuery } from './types.js';
 
 describe('storage types', () => {
   it('allows search options construction', () => {

@@ -1,5 +1,5 @@
-import { MemoryLifecycle } from '@reaatech/agent-memory-core';
 import type { HealthStatus, Memory, MemoryId, MemoryVersion } from '@reaatech/agent-memory-core';
+import { MemoryLifecycle } from '@reaatech/agent-memory-core';
 import { Pool, type PoolConfig, type QueryResultRow } from 'pg';
 import type {
   BackupData,

@@ -7,8 +7,8 @@ import { ImportanceRetrievalStrategy } from './strategies/importance.js';
 import { RecencyRetrievalStrategy } from './strategies/recency.js';
 import { SemanticRetrievalStrategy } from './strategies/semantic.js';
 import { TopicBasedRetrievalStrategy } from './strategies/topic.js';
-import { RetrievalStrategy } from './types.js';
 import type { RetrievalConfig, RetrievalOptions } from './types.js';
+import { RetrievalStrategy } from './types.js';
 
 /**
  * Retrieves relevant memories for a given query context.

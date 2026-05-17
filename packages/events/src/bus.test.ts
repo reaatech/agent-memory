@@ -1,5 +1,5 @@
-import { getLogger, setLogger } from '@reaatech/agent-memory-core';
 import type { Logger } from '@reaatech/agent-memory-core';
+import { getLogger, setLogger } from '@reaatech/agent-memory-core';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { InMemoryEventBus } from './bus.js';
 import type { MemoryEvent } from './types.js';

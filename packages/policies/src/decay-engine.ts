@@ -1,5 +1,5 @@
-import { MemoryImportance } from '@reaatech/agent-memory-core';
 import type { Memory } from '@reaatech/agent-memory-core';
+import { MemoryImportance } from '@reaatech/agent-memory-core';
 import type { DecayConfig, DecayDecision } from './types.js';
 
 /**

@@ -1,5 +1,5 @@
-import { ContradictionStrategy, MemoryLifecycle, MemorySource } from '@reaatech/agent-memory-core';
 import type { Memory } from '@reaatech/agent-memory-core';
+import { ContradictionStrategy, MemoryLifecycle, MemorySource } from '@reaatech/agent-memory-core';
 import { describe, expect, it } from 'vitest';
 import type { Contradiction } from './contradiction-detector.js';
 import { ContradictionResolver } from './contradiction-resolver.js';
