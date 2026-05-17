@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@reaatech/agent-memory-core": ["./packages/core/src/index.ts"],
       "@reaatech/agent-memory-storage": ["./packages/storage/src/index.ts"],
