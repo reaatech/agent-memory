@@ -1,10 +1,10 @@
+import type { Memory } from '@reaatech/agent-memory-core';
 import {
   MemoryImportance,
   MemoryLifecycle,
   MemorySource,
   MemoryType,
 } from '@reaatech/agent-memory-core';
-import type { Memory } from '@reaatech/agent-memory-core';
 import { describe, expect, it } from 'vitest';
 import { matchesMetadataFilter } from './_utils.js';
 

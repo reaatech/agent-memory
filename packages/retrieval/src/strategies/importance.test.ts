@@ -1,10 +1,10 @@
+import type { Memory } from '@reaatech/agent-memory-core';
 import {
   MemoryImportance,
   MemoryLifecycle,
   MemorySource,
   MemoryType,
 } from '@reaatech/agent-memory-core';
-import type { Memory } from '@reaatech/agent-memory-core';
 import type { EmbeddingProvider, ModelInfo } from '@reaatech/agent-memory-embedding';
 import { InMemoryMemoryStorage } from '@reaatech/agent-memory-storage';
 import { beforeEach, describe, expect, it } from 'vitest';

@@ -1,10 +1,10 @@
+import type { Memory } from '@reaatech/agent-memory-core';
 import {
   MemoryImportance,
   MemoryLifecycle,
   MemorySource,
   MemoryType,
 } from '@reaatech/agent-memory-core';
-import type { Memory } from '@reaatech/agent-memory-core';
 import { Pool } from 'pg';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PostgresMemoryStorage } from './postgres.js';

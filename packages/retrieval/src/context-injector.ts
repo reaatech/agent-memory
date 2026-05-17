@@ -1,5 +1,4 @@
-import type { Memory } from '@reaatech/agent-memory-core';
-import type { ConversationTurn } from '@reaatech/agent-memory-core';
+import type { ConversationTurn, Memory } from '@reaatech/agent-memory-core';
 
 /**
  * Injects retrieved memories into conversation context.

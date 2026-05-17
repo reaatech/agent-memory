@@ -1,8 +1,8 @@
 import type { Memory } from '@reaatech/agent-memory-core';
 import { cosineSimilarity } from '@reaatech/agent-memory-core';
 import type { EmbeddingProvider } from '@reaatech/agent-memory-embedding';
-import { MemoryQuery } from '@reaatech/agent-memory-storage';
 import type { MemoryStorage } from '@reaatech/agent-memory-storage';
+import { MemoryQuery } from '@reaatech/agent-memory-storage';
 import type { RetrievalOptions } from '../types.js';
 import { matchesMetadataFilter } from './_utils.js';
 import type { RetrievalStrategyBase } from './base.js';

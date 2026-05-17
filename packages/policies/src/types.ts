@@ -1,10 +1,10 @@
 import type {
+  ContradictionStrategy,
   Memory,
   MemoryImportance,
   MemorySource,
   MemoryType,
 } from '@reaatech/agent-memory-core';
-import type { ContradictionStrategy } from '@reaatech/agent-memory-core';
 
 /**
  * Configuration for the decay engine.

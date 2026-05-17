@@ -1,6 +1,5 @@
-import { MemoryLifecycle } from '@reaatech/agent-memory-core';
 import type { HealthStatus, Memory, MemoryId } from '@reaatech/agent-memory-core';
-import { cosineSimilarity } from '@reaatech/agent-memory-core';
+import { cosineSimilarity, MemoryLifecycle } from '@reaatech/agent-memory-core';
 import type {
   BackupData,
   BatchUpdate,

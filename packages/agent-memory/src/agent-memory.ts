@@ -1,32 +1,29 @@
-import { ContradictionStrategy, MemoryLifecycle } from '@reaatech/agent-memory-core';
 import type { Memory, MemoryType } from '@reaatech/agent-memory-core';
-import { getLogger } from '@reaatech/agent-memory-core';
-import type { EmbeddingProvider } from '@reaatech/agent-memory-embedding';
-import { OpenAIEmbeddingProvider } from '@reaatech/agent-memory-embedding';
-import { CohereEmbeddingProvider } from '@reaatech/agent-memory-embedding';
-import { HuggingFaceEmbeddingProvider } from '@reaatech/agent-memory-embedding';
-import { InMemoryEmbeddingCache } from '@reaatech/agent-memory-embedding';
-import { CachedEmbeddingProvider } from '@reaatech/agent-memory-embedding';
-import type { EmbeddingCache } from '@reaatech/agent-memory-embedding';
+import { ContradictionStrategy, getLogger, MemoryLifecycle } from '@reaatech/agent-memory-core';
+import type { EmbeddingCache, EmbeddingProvider } from '@reaatech/agent-memory-embedding';
+import {
+  CachedEmbeddingProvider,
+  CohereEmbeddingProvider,
+  HuggingFaceEmbeddingProvider,
+  InMemoryEmbeddingCache,
+  OpenAIEmbeddingProvider,
+} from '@reaatech/agent-memory-embedding';
 import type { MemoryEventBus } from '@reaatech/agent-memory-events';
 import { InMemoryEventBus } from '@reaatech/agent-memory-events';
-import { MemoryExtractor } from '@reaatech/agent-memory-extraction';
 import type { ConversationTurn, ExtractionConfig } from '@reaatech/agent-memory-extraction';
+import { MemoryExtractor } from '@reaatech/agent-memory-extraction';
 import type { LLMProvider } from '@reaatech/agent-memory-llm';
-import { PolicyEngine } from '@reaatech/agent-memory-policies';
 import type {
   ContradictionConfig,
   DecayConfig,
   ForgettingConfig,
   PolicyRule,
 } from '@reaatech/agent-memory-policies';
-import { ContradictionDetector } from '@reaatech/agent-memory-policies';
-import { MemoryRetriever } from '@reaatech/agent-memory-retrieval';
-import { RetrievalStrategy } from '@reaatech/agent-memory-retrieval';
+import { ContradictionDetector, PolicyEngine } from '@reaatech/agent-memory-policies';
 import type { RetrievalConfig, RetrievalOptions } from '@reaatech/agent-memory-retrieval';
-import { InMemoryMemoryStorage } from '@reaatech/agent-memory-storage';
+import { MemoryRetriever, RetrievalStrategy } from '@reaatech/agent-memory-retrieval';
 import type { MemoryStorage, PostgresConfig } from '@reaatech/agent-memory-storage';
-import { PostgresMemoryStorage } from '@reaatech/agent-memory-storage';
+import { InMemoryMemoryStorage, PostgresMemoryStorage } from '@reaatech/agent-memory-storage';
 
 /**
  * Configuration for the AgentMemory facade.

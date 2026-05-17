@@ -1,9 +1,9 @@
+import type { Memory } from '@reaatech/agent-memory-core';
 import {
   ContradictionStrategy,
   MemoryImportance,
   MemoryLifecycle,
 } from '@reaatech/agent-memory-core';
-import type { Memory } from '@reaatech/agent-memory-core';
 import { describe, expect, it } from 'vitest';
 import { PolicyEngine } from './engine.js';
 

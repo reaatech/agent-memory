@@ -1,5 +1,5 @@
-import { MemoryImportance, MemoryLifecycle } from '@reaatech/agent-memory-core';
 import type { Memory } from '@reaatech/agent-memory-core';
+import { MemoryImportance, MemoryLifecycle } from '@reaatech/agent-memory-core';
 import { describe, expect, it } from 'vitest';
 import { DecayEngine } from './decay-engine.js';
 
