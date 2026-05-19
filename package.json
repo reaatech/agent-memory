@@ -41,9 +41,7 @@
   },
   "homepage": "https://github.com/reaatech/agent-memory#readme",
   "pnpm": {
-    "overrides": {
-      "brace-expansion": "^5.0.6"
-    },
+    "overrides": {},
     "onlyBuiltDependencies": [
       "@biomejs/biome",
       "esbuild"
