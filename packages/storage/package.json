@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@reaatech/agent-memory-core": "workspace:*",
-    "pg": "^8.21.0"
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
