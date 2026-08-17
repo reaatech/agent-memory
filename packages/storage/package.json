@@ -38,11 +38,11 @@
   },
   "dependencies": {
     "@reaatech/agent-memory-core": "workspace:*",
-    "pg": "^8.21.0"
+    "pg": "^8.23.0"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
-    "@types/pg": "^8.20.0",
+    "@types/pg": "^8.21.0",
     "tsup": "^8.4.0",
     "typescript": "^6.0.3",
     "vitest": "^3.1.1"
